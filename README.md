@@ -5,141 +5,193 @@ Repositorio: https://github.com/maocorrea1015/back-deilify
 Aviso de licencia: este repositorio incluye software propietario de Infocor. Consulte el archivo [LICENSE](LICENSE) para los términos de uso.
 
 ## Descripción
-- Backend construido con Flask que expone una API REST.
-- Incluye módulos para autenticación, gestión de clientes, facturas, pagos, reportes y componentes de IA.
-- Diseñado para ejecutarse en entornos Linux y Windows.
 
-## Estructura principal
-- `wsgi.py`: entrada WSGI que crea la aplicación.
-- `app/`: paquete principal con configuración, extensiones, API y modelos.
-- `requirements.txt`: dependencias del proyecto.
-- `migrations/`: scripts de migración de base de datos.
-- `tests/`: casos de prueba del backend.
+Backend construido con Flask que expone una API REST para el sistema de cartera Deilify.
 
-## Requisitos
-- Python 3.10+ (se recomienda Python 3.11)
-- Virtualenv o entornos equivalentes
-- Git
+Incluye módulos para:
 
-## Configuración en Linux / macOS
-1. Clonar el repositorio:
+* Autenticación y autorización.
+* Gestión de clientes.
+* Gestión de facturas.
+* Gestión de pagos.
+* Reportes.
+* Integraciones y componentes de IA.
+
+## Flujo de trabajo Git
+
+### Importante
+
+La rama `main` corresponde al entorno de producción.
+
+**No se deben realizar desarrollos, commits o push directamente sobre la rama `main`.**
+
+Todo el trabajo debe realizarse sobre la rama `develop` o sobre ramas derivadas de ella.
+
+### Estructura de ramas
+
+| Rama      | Propósito                |
+| --------- | ------------------------ |
+| main      | Producción               |
+| develop   | Desarrollo e integración |
+| feature/* | Nuevas funcionalidades   |
+| hotfix/*  | Correcciones urgentes    |
+
+### Clonar la rama de desarrollo
 
 ```bash
-git clone https://github.com/maocorrea1015/back-deilify.git
-cd backend
+git clone -b develop --single-branch git@github.com:maocorrea1015/back-deilify.git
+cd back-deilify
 ```
 
-2. Crear y activar entorno virtual:
+### Actualizar la rama develop
+
+```bash
+git checkout develop
+git pull origin develop
+```
+
+### Crear una rama para una nueva funcionalidad
+
+```bash
+git checkout develop
+git pull origin develop
+git checkout -b feature/nombre-funcionalidad
+```
+
+Ejemplo:
+
+```bash
+git checkout -b feature/modulo-pagos
+```
+
+### Publicar cambios
+
+```bash
+git add .
+git commit -m "Descripción del cambio"
+git push origin feature/nombre-funcionalidad
+```
+
+Posteriormente deberá crearse un Pull Request hacia la rama `develop`.
+
+### Restricción
+
+No se aceptarán cambios enviados directamente a `main`.
+
+---
+
+## Estructura principal
+
+* `wsgi.py`: punto de entrada WSGI.
+* `app/`: aplicación principal.
+* `requirements.txt`: dependencias del proyecto.
+* `migrations/`: migraciones de base de datos.
+* `tests/`: pruebas automatizadas.
+
+## Requisitos
+
+* Python 3.10 o superior.
+* Git.
+* Entorno virtual (venv).
+
+## Configuración en Linux / macOS
+
+### 1. Clonar el repositorio
+
+```bash
+git clone -b develop --single-branch git@github.com:maocorrea1015/back-deilify.git
+cd back-deilify
+```
+
+### 2. Crear entorno virtual
 
 ```bash
 python -m venv venv
 source venv/bin/activate
 ```
 
-3. Instalar dependencias:
+### 3. Instalar dependencias
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Definir variables de entorno mínimas:
+### 4. Configurar variables de entorno
 
 ```bash
 export SECRET_KEY="cambia-esto"
 export FLASK_DEBUG=1
 ```
 
-5. Ejecutar migraciones si corresponde:
+### 5. Ejecutar migraciones
 
 ```bash
 # alembic upgrade head
 ```
 
-6. Ejecutar la aplicación en modo desarrollo:
+### 6. Ejecutar la aplicación
 
 ```bash
 python wsgi.py
 ```
 
 ## Configuración en Windows (PowerShell)
-1. Clonar el repositorio:
+
+### 1. Clonar el repositorio
 
 ```powershell
-git clone https://github.com/maocorrea1015/back-deilify.git
-cd backend
+git clone -b develop --single-branch git@github.com:maocorrea1015/back-deilify.git
+cd back-deilify
 ```
 
-2. Crear y activar entorno virtual:
+### 2. Crear entorno virtual
 
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
 
-3. Instalar dependencias:
+### 3. Instalar dependencias
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-4. Definir variables de entorno mínimas:
+### 4. Configurar variables de entorno
 
 ```powershell
 $env:SECRET_KEY = "cambia-esto"
 $env:FLASK_DEBUG = "1"
 ```
 
-5. Ejecutar migraciones si corresponde:
-
-```powershell
-# alembic upgrade head
-```
-
-6. Ejecutar la aplicación en modo desarrollo:
+### 5. Ejecutar la aplicación
 
 ```powershell
 python wsgi.py
 ```
-
-## Configuración en Windows (CMD)
-1. Activar el entorno virtual:
-
-```cmd
-venv\Scripts\activate.bat
-```
-
-2. Definir variables de entorno:
-
-```cmd
-set SECRET_KEY=cambia-esto
-set FLASK_DEBUG=1
-```
-
-3. Ejecutar la aplicación:
-
-```cmd
-python wsgi.py
-```
-
-## Ejecución en producción
-- Usar un servidor WSGI como `gunicorn` en Linux:
-
-```bash
-gunicorn -w 4 wsgi:app
-```
-
-En Windows puede utilizarse un servidor compatible con WSGI o una plataforma de despliegue que soporte Flask.
 
 ## Pruebas
-- Ejecutar los tests disponibles en `tests/`:
+
+Ejecutar todas las pruebas:
 
 ```bash
 pytest
 ```
 
+## Producción
+
+La rama `main` contiene exclusivamente versiones aprobadas para producción.
+
+Los despliegues deberán realizarse únicamente a partir de esta rama.
+
 ## Licencia
-- Este proyecto se distribuye bajo una licencia propietaria de Infocor.
-- Consulte [LICENSE](LICENSE) para los términos de uso y restricciones.
+
+Este proyecto es propiedad exclusiva de Infocor.
+
+Consulte el archivo [LICENSE](LICENSE) para conocer los términos de uso, restricciones y limitaciones de responsabilidad.
 
 ## Soporte
-- Proyecto interno de Infocor — uso restringido. Para consultas, contacte al equipo responsable de Infocor.
+
+Proyecto interno de Infocor.
+
+Para soporte técnico, reporte de errores o solicitudes de acceso, contacte al equipo responsable de Infocor.
