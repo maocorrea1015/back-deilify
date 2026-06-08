@@ -1,23 +1,28 @@
-Copyright (c) 2026 Infocor
-All rights reserved.
+Copyright (c) 2026 Infocor.
+All Rights Reserved.
 
-Propietary License - Infocor
+PROPRIETARY SOFTWARE LICENSE
 
-Este software y su documentación asociada son propiedad exclusiva de Infocor.
-Queda terminantemente prohibida su copia, distribución, modificación, ingeniería inversa,
-uso comercial o explotación fuera de los términos y condiciones expresamente autorizados por Infocor.
+This software and all associated documentation are the exclusive property of Infocor.
 
-Permisos limitados:
-- Uso interno autorizado únicamente para empleados o contratistas con licencia explícita de Infocor.
-- Cualquier otro uso debe ser aprobado por escrito por Infocor.
+No part of this software may be copied, distributed, modified, reverse engineered, sublicensed, sold, rented, leased, published, or otherwise exploited without the prior written authorization of Infocor.
 
-Restricciones:
-- No se permite redistribución ni sublicenciamiento sin autorización previa.
-- No se permite el uso en proyectos ajenos a Infocor sin licencia escrita.
-- Queda prohibida la ingeniería inversa y cualquier intento de desmontar o reproducir el código fuente.
+Permitted Use:
 
-Exenciones y responsabilidades:
-- EL SOFTWARE SE PROVEE "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO.
-- INFocor NO SERÁ RESPONSABLE DE DAÑOS DERIVADOS DEL USO O INCAPACIDAD DE USAR EL SOFTWARE.
+Internal use only by employees, contractors, or authorized personnel of Infocor.
+Any other use requires prior written authorization from Infocor.
 
-Contacto: legal@infocor.local
+Restrictions:
+
+Redistribution or sublicensing is strictly prohibited without written permission.
+Use in third-party projects, products, or services is prohibited unless expressly licensed by Infocor.
+Reverse engineering, decompilation, disassembly, or attempts to reproduce the source code are prohibited, except where expressly permitted by applicable law.
+
+Disclaimer:
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+Limitation of Liability:
+IN NO EVENT SHALL INFOCOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES ARISING FROM THE USE OF OR INABILITY TO USE THIS SOFTWARE.
+
+For licensing inquiries, contact:
+legal@infocor.com.co
