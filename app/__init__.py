@@ -13,10 +13,26 @@ def create_app(config_object=None):
 
     register_extensions(app)
     register_blueprints(app)
+    register_commands(app)
     return app
+
+def register_commands(app):
+    from .utils.commands import cartera_cli
+    app.cli.add_command(cartera_cli)
 
 
 def register_extensions(app):
+    from .extensions import db_session, Base
+    from sqlalchemy import create_engine
+    
+    # Configuración básica de la base de datos
+    db_url = app.config.get("SQLALCHEMY_DATABASE_URI", "sqlite:///deilify.db")
+    engine = create_engine(db_url)
+    db_session.configure(bind=engine)
+    
+    # Crear tablas si no existen (simplificado para este ejemplo)
+    Base.metadata.create_all(bind=engine)
+    
     api.init_app(app)
 
 
