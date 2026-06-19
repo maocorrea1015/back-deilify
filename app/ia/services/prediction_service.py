@@ -31,7 +31,7 @@ class PredictionService:
             return "MUY ALTO", "Acción de cobro inmediata / Suspensión de crédito"
 
     @staticmethod
-    def predict_client_risk(client_id: int) -> dict:
+    def predict_client_risk(client_id: int, empresa_id: int = None) -> dict:
         """
         Predicts credit risk (probability of default/late payment) for a client,
         calculates a score 0-100, maps it to a risk level and recommendation,
@@ -45,6 +45,19 @@ class PredictionService:
             err_msg = f"Cliente con ID {client_id} no encontrado."
             logger.error(err_msg)
             raise ValueError(err_msg)
+            
+        if empresa_id is not None and cliente.empresa_id != empresa_id:
+            from flask_jwt_extended import get_jwt
+            try:
+                claims = get_jwt()
+                if claims.get("role") != "ADMIN":
+                    err_msg = "Acceso denegado. El cliente no pertenece a su empresa."
+                    logger.error(err_msg)
+                    raise PermissionError(err_msg)
+            except Exception:
+                err_msg = "Acceso denegado. El cliente no pertenece a su empresa."
+                logger.error(err_msg)
+                raise PermissionError(err_msg)
             
         # 2. Get active model
         active_model = AIModelRepository.get_active_model()

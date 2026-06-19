@@ -8,5 +8,6 @@ from ..controllers.ai_controller import (
     ModelListResource,
     ModelActivateResource,
     PredictResource,
-    PredictionHistoryResource
+    PredictionHistoryResource,
+    ClientReportResource
 )

@@ -90,6 +90,16 @@ class CarteraService:
     @staticmethod
     def sincronizar_facturas(empresa_id, facturas_data):
         for data in facturas_data:
+            # Validar si el cliente existe en absoluto
+            cliente = db_session.execute(
+                select(Cliente).where(Cliente.id == data['cliente_id'])
+            ).scalar_one_or_none()
+            if not cliente:
+                raise ValueError(f"El cliente con ID {data['cliente_id']} no existe.")
+            # Validar si pertenece a la empresa
+            if cliente.empresa_id != empresa_id:
+                raise PermissionError(f"Acceso denegado. El cliente con ID {data['cliente_id']} no pertenece a esta empresa.")
+
             nueva_factura = Factura(
                 empresa_id=empresa_id,
                 cliente_id=data['cliente_id'],
@@ -105,6 +115,16 @@ class CarteraService:
 
     @staticmethod
     def estado_cuenta_cliente(empresa_id, cliente_id):
+        # Validar si el cliente existe en absoluto
+        cliente = db_session.execute(
+            select(Cliente).where(Cliente.id == cliente_id)
+        ).scalar_one_or_none()
+        if not cliente:
+            raise ValueError("El cliente no existe.")
+        # Validar si pertenece a la empresa
+        if cliente.empresa_id != empresa_id:
+            raise PermissionError("Acceso denegado. El cliente no pertenece a esta empresa.")
+
         query = select(Factura).where(Factura.empresa_id == empresa_id, Factura.cliente_id == cliente_id)
         facturas = db_session.execute(query).scalars().all()
         

@@ -10,6 +10,8 @@ from ..services.prediction_service import PredictionService
 from ..repositories.ai_model_repository import AIModelRepository
 from ..repositories.prediction_repository import PredictionRepository
 from ..schemas.ai_schemas import AIModelSchema, PredictionLogSchema
+from ...middleware.tenant import get_empresa_id_from_jwt
+from ..reporte_inteligente import SmartReportService
 
 logger = logging.getLogger(__name__)
 
@@ -148,8 +150,11 @@ class PredictResource(Resource):
         Calcula la probabilidad e indicador de riesgo de mora para un cliente usando el modelo activo.
         """
         try:
-            result = PredictionService.predict_client_risk(client_id)
+            empresa_id = get_empresa_id_from_jwt()
+            result = PredictionService.predict_client_risk(client_id, empresa_id)
             return result, 200
+        except PermissionError as e:
+            return {"error": str(e)}, 403
         except ValueError as e:
             msg = str(e)
             status_code = 404 if "no encontrado" in msg else 400
@@ -174,9 +179,12 @@ class PredictionHistoryResource(Resource):
             page = args.get('page', 1)
             per_page = args.get('per_page', 10)
             
+            claims = get_jwt()
+            empresa_id = None if claims.get("role") == "ADMIN" else get_empresa_id_from_jwt()
+            
             offset = (page - 1) * per_page
-            predictions = PredictionRepository.list_predictions(limit=per_page, offset=offset)
-            total = PredictionRepository.count_predictions()
+            predictions = PredictionRepository.list_predictions(limit=per_page, offset=offset, empresa_id=empresa_id)
+            total = PredictionRepository.count_predictions(empresa_id=empresa_id)
             
             schema = PredictionLogSchema(many=True)
             return {
@@ -188,3 +196,26 @@ class PredictionHistoryResource(Resource):
         except Exception as e:
             logger.exception("Error al listar el historial de predicciones.")
             return {"error": f"Error al obtener historial de predicciones: {str(e)}"}, 500
+
+@ns.route('/predict/<int:client_id>/report')
+@ns.param('client_id', 'ID del cliente a evaluar')
+class ClientReportResource(Resource):
+    @jwt_required()
+    @ns.doc('get_client_report', security='apikey')
+    @ns.response(200, 'Reporte de riesgo e historial calculado exitosamente')
+    @ns.response(404, 'Cliente no encontrado')
+    def get(self, client_id):
+        """
+        Genera un reporte detallado de riesgo de cartera para un cliente específico.
+        """
+        try:
+            empresa_id = get_empresa_id_from_jwt()
+            result = SmartReportService.generate_client_report(client_id, empresa_id)
+            return result, 200
+        except PermissionError as e:
+            return {"error": str(e)}, 403
+        except ValueError as e:
+            return {"error": str(e)}, 404
+        except Exception as e:
+            logger.exception(f"Error al generar reporte de riesgo para cliente {client_id}.")
+            return {"error": f"Error interno al generar reporte: {str(e)}"}, 500
