@@ -4,7 +4,6 @@ import pkgutil
 from flask import Flask
 
 from .config import Config
-from .extensions import api
 
 
 def create_app(config_object=None):
@@ -22,7 +21,7 @@ def register_commands(app):
 
 
 def register_extensions(app):
-    from .extensions import db_session, Base
+    from .extensions import db_session, Base, jwt, api as restx_api
     from sqlalchemy import create_engine
     
     # Configuración básica de la base de datos
@@ -33,7 +32,10 @@ def register_extensions(app):
     # Crear tablas si no existen (simplificado para este ejemplo)
     Base.metadata.create_all(bind=engine)
     
-    api.init_app(app)
+    jwt.init_app(app)
+    restx_api.init_app(app)
+
+
 
 
 def register_blueprints(app):

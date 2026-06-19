@@ -1,6 +1,7 @@
 from flask_restx import Api
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, scoped_session, sessionmaker
+from flask_jwt_extended import JWTManager
 
 api = Api(
     title="Deilify Backend",
@@ -12,3 +13,6 @@ Base = declarative_base()
 
 # La sesión se vinculará al motor en la inicialización de la app
 db_session = scoped_session(sessionmaker())
+
+jwt = JWTManager()
+
