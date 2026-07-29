@@ -14,3 +14,5 @@ class Empresa(Base):
     # Relaciones
     clientes: Mapped[list["Cliente"]] = relationship("Cliente", back_populates="empresa")
     facturas: Mapped[list["Factura"]] = relationship("Factura", back_populates="empresa")
+    usuarios: Mapped[list["Usuario"]] = relationship("Usuario", back_populates="empresa")
+
