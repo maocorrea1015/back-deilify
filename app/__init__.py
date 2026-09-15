@@ -23,9 +23,14 @@ def register_commands(app):
 def register_extensions(app):
     from .extensions import db_session, Base, jwt, api as restx_api
     from sqlalchemy import create_engine
+    from flask_cors import CORS
+    
+    # Habilitar CORS para peticiones desde el frontend
+    CORS(app, resources={r"/*": {"origins": "*"}})
     
     # Configuración básica de la base de datos
     db_url = app.config.get("SQLALCHEMY_DATABASE_URI", "sqlite:///deilify.db")
+
     engine = create_engine(db_url)
     db_session.configure(bind=engine)
     

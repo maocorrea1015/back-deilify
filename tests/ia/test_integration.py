@@ -15,8 +15,20 @@ from app.ia.repositories.prediction_repository import PredictionRepository
 class TestAIIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        import sys
+        try:
+            from app.extensions import api
+            api.namespaces = [api.default_namespace]
+            api.endpoints = set()
+            for k in list(sys.modules.keys()):
+                if k.startswith('app') and k != 'app':
+                    sys.modules.pop(k)
+        except Exception:
+            pass
+
         # Create a temp file for sqlite db
         cls.db_fd, cls.db_path = tempfile.mkstemp()
+
         
         # Override config for testing
         class TestConfig:
