@@ -1,5 +1,6 @@
 from marshmallow import Schema, fields, post_load
 from ..models.factura import EstadoFactura
+from ..models.acuerdo_pago import EstadoAcuerdoPago
 
 class ClienteSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -25,3 +26,28 @@ class PagoSchema(Schema):
     fecha_pago = fields.DateTime()
     metodo_pago = fields.Str(required=True)
     transaccion_id = fields.Str()
+
+
+class AcuerdoPagoSchema(Schema):
+    factura_id = fields.Int(required=True)
+    monto_acordado = fields.Float(allow_none=True)
+    numero_cuotas = fields.Int(required=True)
+    fecha_inicio = fields.DateTime(allow_none=True)
+    observaciones = fields.Str(allow_none=True)
+
+
+class AcuerdoPagoResponseSchema(Schema):
+    id = fields.Int(dump_only=True)
+    empresa_id = fields.Int(dump_only=True)
+    cliente_id = fields.Int(dump_only=True)
+    factura_id = fields.Int(dump_only=True)
+    factura_numero = fields.Str(dump_only=True)
+    cliente_nombre = fields.Str(dump_only=True)
+    monto_acordado = fields.Float(dump_only=True)
+    numero_cuotas = fields.Int(dump_only=True)
+    valor_cuota = fields.Float(dump_only=True)
+    fecha_inicio = fields.DateTime(dump_only=True)
+    fecha_fin = fields.DateTime(dump_only=True)
+    estado = fields.Enum(EstadoAcuerdoPago, dump_only=True)
+    observaciones = fields.Str(allow_none=True, dump_only=True)
+    created_at = fields.DateTime(dump_only=True)
